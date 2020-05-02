@@ -1,0 +1,4 @@
+## HTTP ERROR HANDLING
+```typescript
+
+```
