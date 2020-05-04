@@ -1,5 +1,20 @@
 ##Handling Vanilla Http Requests
-
+### CORS Requests
+install Helmet package
+```typescript
+npm install helmet --save-dev
+```
+Main.ts
+```typescript
+import * as helmet from 'helmet';
+async function bootstrap() {
+    
+}
+  const app = await NestFactory.create(AppModule, {cors: true}); //i have changed this
+  app.use(helmet());
+  app.enableCors({origin: true, methods: 'GET, PUT, POST, DELETE', });
+  await app.listen(3000);
+```
 
 ###1.0 Endpoints
 ```
