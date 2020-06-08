@@ -166,51 +166,50 @@
     }
 
     ```
-Apply middleware within the App Module:- 
-    ```markdown
-    export class AppModule implements NestModule {
-      configure(consumer: MiddlewareConsumer): any {
-        consumer.apply(GetUserMidddlewareService)
-          .forRoutes(AppController);
-      }
-    }
-    ```
-
+##### Implement NestModule for the AppModuleand configure the middleware:- 
+         
+        export class AppModule implements NestModule {
+          configure(consumer: MiddlewareConsumer): any {
+            consumer.apply(GetUserMidddlewareService)
+              .forRoutes(AppController);
+          }
+        }
+        
 #### Use an Authorisation Guard to check privledges
 
-  authentication-guard
-    
-    import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
-    import { Observable } from 'rxjs';
-    import { InjectModel } from '@nestjs/mongoose';
-    
-    @Injectable()
-    export class AuthorisationGuard implements  CanActivate {
-      constructor(private allowedRoles: [string]) {
-      }
-      canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-        const host = context.switchToHttp();
-        const request = host.getRequest();
-        const user = request['user'];
-        const allowed = this.isAllowed(user.roles);
-        if(!allowed) {
-          throw new ForbiddenException(`User doesn't have sufficent access rights`);
-        }
-        return true;
-      }
-    
-      private isAllowed(userRoles: [string]) {
-        let allowed = false;
-        userRoles.forEach(role => {
-          if(this.allowedRoles.includes(role)) {
-            allowed = true;
+   authentication-guard
+        
+        import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
+        import { Observable } from 'rxjs';
+        import { InjectModel } from '@nestjs/mongoose';
+        
+        @Injectable()
+        export class AuthorisationGuard implements  CanActivate {
+          constructor(private allowedRoles: [string]) {
           }
-        })
-        return allowed;
-      }
+          canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+            const host = context.switchToHttp();
+            const request = host.getRequest();
+            const user = request['user'];
+            const allowed = this.isAllowed(user.roles);
+            if(!allowed) {
+              throw new ForbiddenException(`User doesn't have sufficent access rights`);
+            }
+            return true;
+          }
+        
+          private isAllowed(userRoles: [string]) {
+            let allowed = false;
+            userRoles.forEach(role => {
+              if(this.allowedRoles.includes(role)) {
+                allowed = true;
+              }
+            })
+            return allowed;
+          }
+        
+        }
     
-    }
-    ```
 
 ### Apply the Authorisation guard on regular Http Request
     
