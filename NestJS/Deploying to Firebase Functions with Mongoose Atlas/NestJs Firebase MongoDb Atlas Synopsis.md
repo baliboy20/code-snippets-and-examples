@@ -94,7 +94,7 @@ and packages for mongodb/mongoose in Nestjs
 @Module({
   imports: [
     LocationsModule,
-    MongooseModule.forRoot('mongodb+srv://williamPaulton:NuJ611J2VwyzgOeF@cluster0-dp1zo.mongodb.net/london-places?retryWrites=true&w=majority')
+    MongooseModule.forRoot('mongodb')
 
   ],
   controllers: [AppController, FrenchVocabController],
